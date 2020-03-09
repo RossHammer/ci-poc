@@ -1,0 +1,26 @@
+steps:
+  - terraform
+  - ecs
+
+config:
+  terraform:
+    type: terraform
+    source: file://{{ configDir }}/terraform
+    backendConfig:
+      bucket: resolver-{{ .account_name }}-tfstate
+    variables:
+      service_version: '{{ .service_version }}'
+      domain_prefix: '{{ .account_name }}-ci-poc'
+      route53_account: '801652610840'
+
+  ecs:
+    type: ecswait
+    region: us-east-1
+    cluster: ci-poc
+    timeout: 5m
+    services:
+      - service
+    loadBalancerTargetCheck: disabled
+
+actions:
+  live:

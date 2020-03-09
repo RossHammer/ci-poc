@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	log.Println("Starting server")
 	addr, ok := os.LookupEnv("REDIS_ADDR")
 	if !ok {
 		panic("REDIS_ADDR not set")
