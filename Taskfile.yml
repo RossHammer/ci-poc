@@ -1,0 +1,22 @@
+version: '2'
+output: prefixed
+
+vars:
+  REDIS_ADDR: localhost:6379
+
+tasks:
+  default:
+    deps:
+      - task: unit-test
+      - task: lint
+
+  unit-test:
+    env:
+      REDIS_ADDR: '{{.REDIS_ADDR}}'
+    cmds:
+      - go test ./... -count=1 -v
+
+  lint:
+    cmds:
+      - go vet ./...
+      - golint ./...
